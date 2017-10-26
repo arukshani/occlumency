@@ -9,7 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Responsible for echoing back relieved messages as is.
+ * Responsible for echoing back received messages as is.
  */
 public class EchoServerInboundHandler extends ChannelInboundHandlerAdapter {
     protected static final Logger LOG = LoggerFactory.getLogger(EchoServerInboundHandler.class);
