@@ -26,10 +26,15 @@ public class EchoClientAPI {
         channelFuture.addListener(new ChannelFutureListener() {
             @Override
             public void operationComplete(ChannelFuture channelFuture) throws Exception {
-                LOG.info(" Connected to server : " + channelFuture.channel().remoteAddress());
-                LOG.info(" Client bound to  : " + channelFuture.channel().localAddress());
-                channelFuture.channel().writeAndFlush(Unpooled.copiedBuffer(message, CharsetUtil.UTF_8));
+                if(channelFuture.isDone() && channelFuture.isSuccess()){
+                    LOG.info(" Connected to server : " + channelFuture.channel().remoteAddress());
+                    LOG.info(" Client bound to  : " + channelFuture.channel().localAddress());
+                    channelFuture.channel().writeAndFlush(Unpooled.copiedBuffer(message, CharsetUtil.UTF_8));
+                }else{
+                    LOG.error(" Client was unable to make a connection to server!");
+                }
             }
+
         });
     }
 
