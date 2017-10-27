@@ -2,10 +2,10 @@ package com.ruk.server.handler.inbound;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.util.CharsetUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,7 +27,7 @@ public class EchoServerInboundHandler extends ChannelInboundHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         ByteBuf incomingMsg = (ByteBuf) msg;
         if (LOG.isDebugEnabled()) {
-            LOG.debug("Incoming message : " + incomingMsg.toString());
+            LOG.debug("Incoming message : " + incomingMsg.toString(CharsetUtil.UTF_8));
         }
         ctx.write(incomingMsg);
     }
