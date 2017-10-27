@@ -3,6 +3,7 @@ package com.ruk.server.handler.inbound;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFutureListener;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import org.slf4j.Logger;
@@ -11,6 +12,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Responsible for echoing back received messages as is.
  */
+@ChannelHandler.Sharable
 public class EchoServerInboundHandler extends ChannelInboundHandlerAdapter {
     protected static final Logger LOG = LoggerFactory.getLogger(EchoServerInboundHandler.class);
 
@@ -23,7 +25,6 @@ public class EchoServerInboundHandler extends ChannelInboundHandlerAdapter {
      */
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-
         ByteBuf incomingMsg = (ByteBuf) msg;
         if (LOG.isDebugEnabled()) {
             LOG.debug("Incoming message : " + incomingMsg.toString());
@@ -40,6 +41,13 @@ public class EchoServerInboundHandler extends ChannelInboundHandlerAdapter {
      */
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
-        ctx.writeAndFlush(Unpooled.EMPTY_BUFFER).addListener(ChannelFutureListener.CLOSE);
+        ctx.writeAndFlush(Unpooled.EMPTY_BUFFER);
+    }
+
+    @Override
+    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Channel got inactive in EchoServerInboundHandler");
+        }
     }
 }
