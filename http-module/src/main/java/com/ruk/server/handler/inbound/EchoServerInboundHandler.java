@@ -50,4 +50,10 @@ public class EchoServerInboundHandler extends ChannelInboundHandlerAdapter {
             LOG.debug("Channel got inactive in EchoServerInboundHandler");
         }
     }
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        LOG.error("Exception in EchoServerInboundHandler. ", cause);
+        ctx.close();
+    }
 }

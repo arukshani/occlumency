@@ -18,8 +18,7 @@ public class EchoClientInboundHandler extends SimpleChannelInboundHandler<ByteBu
      */
     @Override
     public void channelActive(ChannelHandlerContext ctx) {
-        ctx.writeAndFlush(Unpooled.copiedBuffer(" All good! ", CharsetUtil
-                .UTF_8));
+        ctx.writeAndFlush(Unpooled.copiedBuffer(" All good! ", CharsetUtil.UTF_8));
     }
 
     /**
@@ -32,5 +31,11 @@ public class EchoClientInboundHandler extends SimpleChannelInboundHandler<ByteBu
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, ByteBuf msg) throws Exception {
         LOG.info("Client received: " + msg.toString(CharsetUtil.UTF_8));
+    }
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        LOG.error("Exception in EchoClientInboundHandler. ", cause);
+        ctx.close();
     }
 }
