@@ -12,7 +12,7 @@ public class EchoClientInboundHandler extends SimpleChannelInboundHandler<ByteBu
     protected static final Logger LOG = LoggerFactory.getLogger(EchoClientInboundHandler.class);
 
     /**
-     * As soon as the incoming channel gets inactive we send another message to server.
+     * As soon as the incoming channel gets active we send another message to server.
      *
      * @param ctx
      */
