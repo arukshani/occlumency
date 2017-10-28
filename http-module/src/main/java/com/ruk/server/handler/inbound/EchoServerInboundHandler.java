@@ -49,6 +49,7 @@ public class EchoServerInboundHandler extends ChannelInboundHandlerAdapter {
         if (LOG.isDebugEnabled()) {
             LOG.debug("Channel got inactive in EchoServerInboundHandler");
         }
+        ctx.close();
     }
 
     @Override

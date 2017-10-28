@@ -38,4 +38,12 @@ public class EchoClientInboundHandler extends SimpleChannelInboundHandler<ByteBu
         LOG.error("Exception in EchoClientInboundHandler. ", cause);
         ctx.close();
     }
+
+    @Override
+    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Channel got inactive in EchoClientInboundHandler");
+        }
+        ctx.close();
+    }
 }
