@@ -37,6 +37,7 @@ public class HttpClient {
 
     public void destroyConnection() {
         try {
+            channelFuture.channel().closeFuture();
             eventLoopGroup.shutdownGracefully().sync();
         } catch (InterruptedException e) {
             LOG.error("Error destroying connection to server.", e);

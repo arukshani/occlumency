@@ -15,7 +15,6 @@ public class EchoClientAPI {
 
     private HttpClient httpClient;
     private ChannelFuture channelFuture;
-    private boolean isFinalMessage;
 
     public void connectToServer(String host, int port) throws Exception {
         httpClient = new HttpClient(host, port);
@@ -23,14 +22,20 @@ public class EchoClientAPI {
         channelFuture = httpClient.connectToServer();
     }
 
-    public void writeToServer(String message) {
+    public void writeToServer(String message, boolean isFinalMessage) {
         channelFuture.addListener((ChannelFutureListener) channelFuture -> {
             if (channelFuture.isDone() && channelFuture.isSuccess()) {
                 LOG.info(" Connected to server : " + channelFuture.channel().remoteAddress());
                 LOG.info(" Client bound to  : " + channelFuture.channel().localAddress());
                 //If this is the final message flush all data.
                 if (isFinalMessage) {
-                    channelFuture.channel().writeAndFlush(Unpooled.copiedBuffer(message, CharsetUtil.UTF_8));
+                    ChannelFuture writeFuture = channelFuture.channel()
+                            .writeAndFlush(Unpooled.copiedBuffer(message, CharsetUtil.UTF_8));
+                    writeFuture.addListener((ChannelFutureListener) future -> {
+                        if (LOG.isDebugEnabled()) {
+                            LOG.debug("Client write is successful.");
+                        }
+                    });
                 } else {
                     channelFuture.channel().write(Unpooled.copiedBuffer(message, CharsetUtil.UTF_8));
                 }
@@ -42,9 +47,5 @@ public class EchoClientAPI {
 
     public void destroyConnection() {
         httpClient.destroyConnection();
-    }
-
-    public void setFinalMessage(boolean finalMessage) {
-        isFinalMessage = finalMessage;
     }
 }
