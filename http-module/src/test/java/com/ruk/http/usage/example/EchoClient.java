@@ -12,6 +12,7 @@ public class EchoClient {
         try {
             clientAPI.connectToServer("localhost", 9090);
             clientAPI.writeToServer("Message 1 from client. ");
+            clientAPI.setFinalMessage(true);
             clientAPI.writeToServer("Message 2 from client. ");
         } catch (Exception e) {
             LOG.error("Error in example EchoClient. ", e);
